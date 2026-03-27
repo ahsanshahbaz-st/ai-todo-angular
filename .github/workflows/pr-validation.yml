@@ -1,0 +1,34 @@
+name: PR Validation
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  validate-pr:
+    name: Validate PR Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR links an issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.pull_request.body || '';
+            const hasCloses = /closes?\s+#\d+/i.test(body);
+            if (!hasCloses) {
+              core.setFailed('PR body must contain "Closes #<number>" to link a GitHub issue.');
+            } else {
+              core.info('PR correctly links an issue.');
+            }
+
+      - name: Check branch naming convention
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branch = context.payload.pull_request.head.ref;
+            const validPattern = /^(feat|fix|refactor|chore|docs|test|epic)\/\d+-[\w-]+$/;
+            if (!validPattern.test(branch)) {
+              core.warning(`Branch "${branch}" does not follow naming convention: <type>/<issue>-<slug>`);
+            } else {
+              core.info(`Branch "${branch}" follows naming convention.`);
+            }

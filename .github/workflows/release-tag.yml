@@ -1,0 +1,29 @@
+name: Release Tag
+
+on:
+  push:
+    branches:
+      - 'release/**'
+
+jobs:
+  tag-release:
+    name: Tag Sprint Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract sprint from branch
+        id: sprint
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          SPRINT_TAG=$(echo "$BRANCH" | sed 's|release/||')
+          echo "tag=v${SPRINT_TAG}" >> "$GITHUB_OUTPUT"
+          echo "Sprint tag: v${SPRINT_TAG}"
+
+      - name: Create Git tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "${{ steps.sprint.outputs.tag }}" -m "Release ${{ steps.sprint.outputs.tag }}"
+          git push origin "${{ steps.sprint.outputs.tag }}"

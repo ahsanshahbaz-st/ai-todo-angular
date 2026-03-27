@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: AI Development Lifecycle
+    url: https://github.com/ahsanshahbaz-st/ai-todo-angular/blob/develop/docs/ai-lifecycle.md
+    about: Read about our AI-powered development workflow before creating an issue

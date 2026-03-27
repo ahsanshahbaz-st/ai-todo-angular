@@ -176,15 +176,157 @@ npm run build        # production build
 npm test             # run Jasmine/Karma specs
 ```
 
-## Issue-to-Feature Mapping (Roadmap)
+---
 
-| # | Feature                  | Status      |
-|---|--------------------------|-------------|
-| 1 | Todo List Component      | To Do       |
-| 2 | Todo Form Component      | To Do       |
-| 3 | Filter & Search          | To Do       |
-| 4 | Priority Badges          | To Do       |
-| 5 | Toggle / Complete Todos  | To Do       |
-| 6 | Delete Todos             | To Do       |
-| 7 | Unit Test Suite          | To Do       |
-| 8 | Responsive Styles        | To Do       |
+## Branching Strategy
+
+### Branch Hierarchy
+
+```
+main                          ← production-ready (end of milestone)
+├── release/m1-sprint-1       ← stable sprint 1 release
+├── release/m1-sprint-2       ← stable sprint 2 release
+└── develop                   ← active development
+    ├── feat/1-todo-list      ← per-issue feature branch
+    ├── fix/7-resolve-xyz     ← per-issue fix branch
+    └── ...
+```
+
+### Branch Naming Conventions
+
+| Type     | Pattern                          | Example                          |
+|----------|----------------------------------|----------------------------------|
+| Feature  | `feat/<issue>-<slug>`            | `feat/1-todo-list-component`     |
+| Bug fix  | `fix/<issue>-<slug>`             | `fix/12-checkbox-toggle`         |
+| Refactor | `refactor/<issue>-<slug>`        | `refactor/15-service-cleanup`    |
+| DevOps   | `chore/<issue>-<slug>`           | `chore/9-agile-devops-workflow`  |
+| Epic     | `epic/<issue>-<slug>`            | `epic/10-todo-mvp`               |
+| Release  | `release/m<milestone>-sprint-<n>`| `release/m1-sprint-1`            |
+
+### Merge Flow
+
+```
+feat/* ──→ develop        (PR during sprint — squash merge)
+develop ──→ release/*     (at sprint end — merge commit)
+release/* ──→ main        (at milestone end — merge commit)
+```
+
+1. **During a sprint:** developers create `feat/*` or `fix/*` branches from `develop`, open PRs back to `develop`.
+2. **At sprint end:** `develop` is merged into `release/m<n>-sprint-<n>`. This triggers the release tag workflow.
+3. **After 2 sprints:** both release branches merge into `main` for the final monthly release.
+
+### Branch Protection Rules (Recommended)
+
+| Branch    | Rules                                                |
+|-----------|------------------------------------------------------|
+| `main`    | Require PR, require status checks, no force push     |
+| `develop` | Require PR, require CI pass, squash merge only       |
+| `release/*` | Require PR from develop only, require CI pass      |
+
+---
+
+## Agile Process
+
+### Milestones (Monthly Planning)
+
+Each GitHub milestone = **1 month of work**, containing **2 sprints** (2 weeks each).
+
+| Milestone | Period    | Scope                                  | Sprints |
+|-----------|-----------|----------------------------------------|---------|
+| M1        | Apr 2026  | Todo App MVP — CRUD, UI, tests         | 1, 2    |
+| M2        | May 2026  | Advanced — due dates, drag-drop, a11y  | 3, 4    |
+
+**Naming:** `M<n> — <Month Year> — <Theme>`
+
+### Sprint Structure
+
+| Sprint | Dates          | Milestone | Release Branch          |
+|--------|----------------|-----------|-------------------------|
+| 1      | Apr 1–14       | M1        | `release/m1-sprint-1`   |
+| 2      | Apr 15–30      | M1        | `release/m1-sprint-2`   |
+| 3      | May 1–14       | M2        | `release/m2-sprint-3`   |
+| 4      | May 15–31      | M2        | `release/m2-sprint-4`   |
+
+Each sprint = 1 release cycle → each milestone produces 2 releases.
+
+### Issue Hierarchy
+
+```
+Epic
+ └── Feature
+      └── User Story
+           └── Bug / Defect
+```
+
+| Level       | Template                   | Label          | Scope                        |
+|-------------|----------------------------|----------------|------------------------------|
+| Epic        | `epic.md`                  | `type:epic`    | Large body of work (multi-sprint) |
+| Feature     | `ai-workflow-task.md`      | `type:feature` | Deliverable capability       |
+| User Story  | `user-story.md`            | `type:user-story` | Single unit of user value |
+| Bug/Defect  | `defect.md`                | `type:bug`     | Something broken             |
+
+### Label Strategy
+
+| Category   | Labels                                          | Purpose                |
+|------------|--------------------------------------------------|------------------------|
+| **Type**   | `type:epic`, `type:feature`, `type:user-story`, `type:bug`, `type:devops` | Issue classification |
+| **Sprint** | `sprint:1`, `sprint:2`, `sprint:3`, `sprint:4`  | Sprint assignment      |
+| **Status** | `status:backlog`, `status:in-progress`, `status:review`, `status:done` | Workflow state |
+| **Priority** | `priority:high`, `priority:medium`, `priority:low` | Urgency            |
+| **Milestone** | `milestone:m1`, `milestone:m2`               | Monthly grouping       |
+
+### GitHub Workflow (Issue + PR Flow)
+
+```
+1. Create Issue  ─── Use template matching the issue type
+       │              Assign milestone, sprint, priority, and type labels
+       ▼
+2. Create Branch ─── feat/<issue>-<slug> from develop
+       │
+       ▼
+3. Plan          ─── Use prompts/plan-feature.prompt.md
+       │              Break issue into tasks, identify files
+       ▼
+4. Generate Code ─── Use prompts/generate-feature.prompt.md
+       │              Follow SKILL.md conventions
+       ▼
+5. Validate      ─── npm run build && npm test
+       │
+       ▼
+6. Open PR       ─── Target: develop
+       │              Body: "Closes #<issue>"
+       │              Use .github/pull_request_template.md
+       ▼
+7. AI Review     ─── Use prompts/review-pr.prompt.md
+       │              Check: best practices, tests, security
+       ▼
+8. Merge         ─── Squash merge into develop
+       │              Update issue label → status:done
+       ▼
+9. Sprint End    ─── Merge develop → release/m<n>-sprint-<n>
+       │              Auto-tag via GitHub Action
+       ▼
+10. Milestone End ── Merge release branches → main
+```
+
+### GitHub Actions (CI/CD)
+
+| Workflow           | Trigger                       | Purpose                          |
+|--------------------|-------------------------------|----------------------------------|
+| `ci.yml`           | PR to develop/release/main    | Build + test validation          |
+| `pr-validation.yml`| PR opened/edited              | Check issue link + branch naming |
+| `release-tag.yml`  | Push to release/*             | Auto-create version tag          |
+
+---
+
+## Issue-to-Feature Mapping (M1 Roadmap)
+
+| Issue | Feature                           | Sprint | Status   |
+|-------|-----------------------------------|--------|----------|
+| #10   | Epic: Todo App MVP                | 1–2    | Open     |
+| #1    | Todo List Component               | 1      | Backlog  |
+| #2    | Todo Form Component               | 1      | Backlog  |
+| #4    | Wire TodoPage as smart container  | 1      | Backlog  |
+| #3    | Todo Filter Component             | 2      | Backlog  |
+| #6    | Global styles & responsive layout | 2      | Backlog  |
+| #5    | Unit test suite                   | 2      | Backlog  |

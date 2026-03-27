@@ -23,17 +23,36 @@ is built through a GitHub issue-driven pipeline:
 
 ## Workflow Rules
 1. Never implement features directly — always start from a GitHub issue
-2. Branch naming: `feat/<issue-number>-<slug>` or `fix/<issue-number>-<slug>`
+2. Branch naming: `<type>/<issue-number>-<slug>` (feat/, fix/, refactor/, chore/, epic/)
 3. Every PR must link an issue with `Closes #<number>`
 4. Validate with `npm run build` and `npm test` before pushing
 5. Use prompts in `/prompts/` for planning, generation, and review
-6. Reference `.github/SKILL.md` for detailed templates and architecture
+6. Reference `.github/SKILL.md` for detailed templates, architecture, and branching strategy
+
+## Branching Strategy
+- `main` — production-ready (end of milestone)
+- `release/m<n>-sprint-<n>` — stable sprint release
+- `develop` — active development (all feature PRs target here)
+- `feat/<issue>-<slug>` / `fix/<issue>-<slug>` — per-issue branches
+- Merge flow: `feat/* → develop → release/* → main`
+
+## Agile Process
+- Milestones = 1 month, containing 2 sprints (2 weeks each)
+- Issue hierarchy: Epic → Feature → User Story → Bug/Defect
+- Each sprint produces a release
+- Labels encode type, sprint, status, priority, and milestone
 
 ## Key Files
-- `.github/SKILL.md` — Full development skill with code templates
+- `.github/SKILL.md` — Full development skill with code templates and branching strategy
 - `prompts/implement-issue.prompt.md` — End-to-end pipeline automation
 - `prompts/plan-feature.prompt.md` — Issue → Plan
 - `prompts/generate-feature.prompt.md` — Plan → Code
 - `prompts/review-pr.prompt.md` — PR → Review
-- `.github/ISSUE_TEMPLATE/ai-workflow-task.md` — Issue template
+- `.github/ISSUE_TEMPLATE/epic.md` — Epic template
+- `.github/ISSUE_TEMPLATE/ai-workflow-task.md` — Feature template
+- `.github/ISSUE_TEMPLATE/user-story.md` — User Story template
+- `.github/ISSUE_TEMPLATE/defect.md` — Bug/Defect template
 - `.github/pull_request_template.md` — PR template
+- `.github/workflows/ci.yml` — Build & test CI
+- `.github/workflows/pr-validation.yml` — PR format checks
+- `.github/workflows/release-tag.yml` — Automatic release tagging
