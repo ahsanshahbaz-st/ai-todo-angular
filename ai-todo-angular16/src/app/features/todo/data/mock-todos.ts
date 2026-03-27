@@ -1,0 +1,58 @@
+import { Todo } from '../models/todo.model';
+
+export const MOCK_TODOS: Todo[] = [
+  {
+    id: 1,
+    title: 'Set up project structure',
+    description: 'Initialize Angular 16 workspace with feature modules, routing, and SCSS.',
+    completed: true,
+    priority: 'high',
+    createdAt: new Date('2026-03-01'),
+    updatedAt: new Date('2026-03-02'),
+  },
+  {
+    id: 2,
+    title: 'Create todo model and service',
+    description: 'Define the Todo interface and implement an in-memory CRUD service.',
+    completed: true,
+    priority: 'high',
+    createdAt: new Date('2026-03-03'),
+    updatedAt: new Date('2026-03-04'),
+  },
+  {
+    id: 3,
+    title: 'Build todo list component',
+    description: 'Display todos with filter and sort capabilities.',
+    completed: false,
+    priority: 'medium',
+    createdAt: new Date('2026-03-05'),
+    updatedAt: new Date('2026-03-05'),
+  },
+  {
+    id: 4,
+    title: 'Add create / edit form',
+    description: 'Reactive form with validation for adding and editing todos.',
+    completed: false,
+    priority: 'medium',
+    createdAt: new Date('2026-03-06'),
+    updatedAt: new Date('2026-03-06'),
+  },
+  {
+    id: 5,
+    title: 'Implement priority badges',
+    description: 'Colour-coded badges that reflect low / medium / high priority.',
+    completed: false,
+    priority: 'low',
+    createdAt: new Date('2026-03-07'),
+    updatedAt: new Date('2026-03-07'),
+  },
+  {
+    id: 6,
+    title: 'Write unit tests',
+    description: 'Cover service methods and component rendering with Jasmine specs.',
+    completed: false,
+    priority: 'high',
+    createdAt: new Date('2026-03-08'),
+    updatedAt: new Date('2026-03-08'),
+  },
+];
