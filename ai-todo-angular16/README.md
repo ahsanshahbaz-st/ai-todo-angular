@@ -1,27 +1,102 @@
-# AiTodoAngular16
+# AI Todo Angular 16 — Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+The Angular 16 application for the AI-Powered Development Lab. Built with NgModules, feature-based architecture, and strict TypeScript.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Quick Start
 
-## Code scaffolding
+```bash
+npm install
+npm start               # http://localhost:4200
+npm run build            # Production build
+npm test                 # Jasmine + Karma unit tests
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## Architecture
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```
+src/app/
+├── app.module.ts                 # Root module (BrowserModule, routing, core, shared)
+├── app-routing.module.ts         # Lazy-loads TodoModule at root path
+├── app.component.ts              # Shell — header + <router-outlet>
+├── core/
+│   └── core.module.ts            # Singleton services, guards, interceptors
+├── shared/
+│   └── shared.module.ts          # Reusable components, pipes, directives
+└── features/
+    └── todo/
+        ├── models/
+        │   └── todo.model.ts     # Todo interface + CreateTodoPayload type
+        ├── data/
+        │   └── mock-todos.ts     # Seed data (6 mock todos)
+        ├── services/
+        │   ├── todo.service.ts   # In-memory CRUD via BehaviorSubject
+        │   └── todo.service.spec.ts
+        ├── components/           # Presentational components (built via issues)
+        ├── todo-page/
+        │   └── todo-page.component.ts  # Smart/container page
+        ├── todo.module.ts
+        └── todo-routing.module.ts
+```
 
-## Running unit tests
+---
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Module Structure
 
-## Running end-to-end tests
+| Module           | Role                                      |
+|------------------|-------------------------------------------|
+| `AppModule`      | Bootstraps the app, imports routing + core |
+| `CoreModule`     | Singleton services (app-wide)              |
+| `SharedModule`   | Reusable UI components, pipes, directives  |
+| `TodoModule`     | Lazy-loaded feature — all todo concerns    |
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+---
 
-## Further help
+## State Management
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+`TodoService` manages state in-memory using `BehaviorSubject<Todo[]>`:
+
+| Method       | Description                     |
+|--------------|---------------------------------|
+| `getAll()`   | Returns `Observable<Todo[]>`    |
+| `getById()`  | Returns `Observable<Todo>`      |
+| `add()`      | Creates a new todo              |
+| `toggle()`   | Toggles completed status        |
+| `update()`   | Partial update by id            |
+| `remove()`   | Deletes a todo by id            |
+
+Mock data is seeded from `data/mock-todos.ts` on service initialization.
+
+---
+
+## Conventions
+
+| Rule                              | Detail                                     |
+|-----------------------------------|--------------------------------------------|
+| Templates                         | Inline `template` string (no `.html` files)|
+| Styles                            | Inline `styles` array with SCSS            |
+| Change Detection                  | `OnPush` for presentational components     |
+| `*ngFor`                          | Always use `trackBy`                       |
+| Subscriptions                     | Use `async` pipe — no manual `.subscribe()`|
+| Forms                             | `ReactiveFormsModule` + `FormBuilder`      |
+| TypeScript                        | Strict mode — no `any`, no implicit returns|
+| File naming                       | `kebab-case` files, `PascalCase` classes   |
+| Testing                           | Every `.ts` file gets a `.spec.ts` sibling |
+
+---
+
+## Adding Features
+
+Features are not created directly. Each one follows the issue-driven pipeline:
+
+1. Create a GitHub issue from a template
+2. Create branch: `feat/<issue-number>-<slug>`
+3. Implement following `.github/SKILL.md` conventions
+4. Open PR with `Closes #<number>`
+5. Pass `npm run build` + `npm test`
+6. Merge after review
+
+See the root [README](../README.md) and [SKILL.md](../.github/SKILL.md) for full details.
