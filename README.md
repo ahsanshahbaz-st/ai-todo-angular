@@ -1,48 +1,98 @@
-# AI Todo Angular
+# 🤖 AI-Powered Development Lifecycle (Angular 16 Demo)
 
-This repository demonstrates an AI-powered development lifecycle for an Angular application:
+This repository demonstrates how AI can assist across the entire development lifecycle:
 
-- Issue-first planning with clear acceptance criteria
-- Focused implementation in feature branches
-- Pull requests that link back to issues
-- Review and merge workflow for controlled delivery
+> From **GitHub Issues → Code Generation → Pull Requests → AI Review**
 
-## Project Layout
+---
 
-- `ai-todo-angular16/`: Angular 16 application (routing + SCSS + strict mode)
-- `.github/ISSUE_TEMPLATE/`: Standardized issue templates
-- `.github/pull_request_template.md`: PR checklist for quality gates
+## 🚀 What This Project Shows
 
-## Runtime and Tooling
+Instead of traditional development:
 
-- Node.js: 18 LTS (compatible with Angular 16)
-- Angular CLI: 16.2.x
-- Angular framework: 16.2.x
+👨‍💻 Developer writes everything manually
 
-## AI-Driven Workflow (Issues -> PR)
+We simulate:
 
-1. Create an issue using the provided template.
-2. Define acceptance criteria and implementation notes.
-3. Implement changes in a dedicated branch.
-4. Open a PR using the PR template and link the issue.
-5. Run validation checks (`build`, `test`, lint if configured).
-6. Review, approve, and merge.
+⚡ AI-assisted workflow using GitHub + Copilot
 
-## Local Development
+---
 
-From the application directory:
+## 🔁 AI Development Lifecycle
 
-```bash
-cd ai-todo-angular16
-npm install
-npm start
-```
+1. 📝 Create a GitHub Issue (feature request)
+2. 🤖 Use AI to generate implementation plan
+3. ⚙️ AI generates Angular 16 code (via Copilot)
+4. 📦 Push changes → Create Pull Request
+5. 🔍 AI reviews PR and suggests improvements
+6. ✅ Developer validates and merges
 
-Then open http://localhost:4200.
+---
 
-## Validation
+## 🧱 Tech Stack
 
-```bash
-cd ai-todo-angular16
-npm run build
-```
+* Angular 16
+* TypeScript
+* GitHub
+* GitHub Copilot
+
+---
+
+## 📁 Project Structure
+
+ai-todo-angular/
+│
+├── ai-todo-angular16/        # Angular 16 Application
+├── prompts/                 # AI prompts used in development
+├── docs/                    # AI workflow documentation
+├── .github/                 # Issue & PR templates
+│
+└── README.md
+
+---
+
+## 🧠 AI Prompts Used
+
+Located in `/prompts`
+
+Examples:
+
+* Generate feature module
+* Create Angular service
+* Review pull request
+
+---
+
+## 🎬 Demo Flow (For Session)
+
+1. Create a GitHub Issue
+2. Use AI to generate plan
+3. Generate Angular feature using Copilot
+4. Push code → Create PR
+5. Show AI review suggestions
+
+---
+
+## ⚠️ Important Note
+
+AI does NOT replace developers.
+
+It helps with:
+
+* Boilerplate code
+* Faster scaffolding
+* Code suggestions
+
+Developers still handle:
+
+* Architecture
+* Logic validation
+* Code quality
+
+---
+
+## 🎯 Goal
+
+To help developers understand how AI can be integrated into real-world development workflows using familiar tools.
+
+---
