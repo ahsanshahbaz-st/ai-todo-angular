@@ -38,6 +38,29 @@
 ### 6. Merge
 - Squash merge into `develop`
 - Issue auto-closes via PR link
+- Update issue label → `status:done`
+
+## Branching & Release Flow
+
+```
+feat/* ──→ develop        (squash merge via PR)
+develop ──→ release/*     (sprint-end merge)
+release/* ──→ main        (milestone-end merge)
+```
+
+### Sprint Release Process
+1. At sprint end, merge `develop` → `release/m<n>-sprint-<n>`
+2. GitHub Action auto-tags the release (e.g., `vm1-sprint-1`)
+3. After 2 sprints, merge release branches → `main`
+
+## Agile Structure
+
+| Level       | Template          | Label            |
+|-------------|-------------------|------------------|
+| Epic        | `epic.md`         | `type:epic`      |
+| Feature     | `ai-workflow-task`| `type:feature`   |
+| User Story  | `user-story.md`   | `type:user-story`|
+| Bug/Defect  | `defect.md`       | `type:bug`       |
 
 ## Tools Used
 

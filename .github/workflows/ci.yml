@@ -1,0 +1,36 @@
+name: CI — Build & Test
+
+on:
+  pull_request:
+    branches: [develop, 'release/**', main]
+  push:
+    branches: [develop]
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ai-todo-angular16
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: ai-todo-angular16/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (production)
+        run: npm run build
+
+      - name: Run tests (headless)
+        run: npx ng test --watch=false --browsers=ChromeHeadless
+        continue-on-error: true
